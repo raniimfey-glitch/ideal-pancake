@@ -1,0 +1,670 @@
+<!--
+================================================================================
+  Project Name : التعليم الممتع | Fun Learning
+  Version      :
+  App Title    : قصة النجمة الصغيرة في الغابة
+  Developer    : Samira Abdessadok "رنيم فاي" | سميرة عبد الصّدوق
+  Date         : جوان 2026
+
+  Copyright (c) 2026 Samira Abdessadok "رنيم فاي". All Rights Reserved.
+  جميع الحقوق محفوظة © 2026 سميرة عبد الصّدوق "رنيم فاي".
+
+  NOTICE: This software is the exclusive intellectual property of
+  Samira Abdessadok "رنيم فاي". Unauthorized reproduction, distribution,
+  modification, or use of this code, in whole or in part, is strictly
+  prohibited without prior written consent from the owner.
+
+  تنبيه: هذا البرنامج هو ملكية فكرية حصرية لسميرة عبد الصّدوق "رنيم فاي".
+  يمنع منعاً باتاً نسخ أو توزيع أو تعديل أو استخدام هذا الكود،
+  كلياً أو جزئياً، دون الحصول على إذن خطي مسبق من صاحبة الحقوق.
+
+  ACKNOWLEDGMENT: Developed and designed by Samira Abdessadok (Raniim Fey),
+  utilizing Artificial Intelligence tools as an assistive technology in
+  coding and data structuring, while retaining full intellectual property
+  rights and editorial oversight.
+  إقرار: تمّ التّطوير والتّصميم بواسطة سميرة عبد الصّدوق (رنيم فاي)،
+  مع الاستعانة بأدوات الذّكاء الاصطناعي كتقنية مساعدة في البرمجة
+  وهيكلة البيانات، مع الاحتفاظ الكامل بكافة حقوق الملكيّة الفكريّة
+  والإشراف التّحريري.
+================================================================================
+-->
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مغامرة نجمة | رنيم فاي</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap');
+
+  :root {
+    --ink:       #1a1230;
+    --paper:     #fdf6ec;
+    --gold:      #f5a623;
+    --teal:      #00b89f;
+    --rose:      #e8517a;
+    --violet:    #7c5cbf;
+    --sky:       #4db8e8;
+    --leaf:      #4caf82;
+    --muted:     #8a7fa8;
+    --card-bg:   #ffffff;
+    --shadow:    0 8px 32px rgba(26,18,48,0.13);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Tajawal', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* ── STARFIELD ── */
+  #stars {
+    position: fixed; inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+  .star {
+    position: absolute;
+    border-radius: 50%;
+    background: var(--gold);
+    opacity: 0;
+    animation: twinkle var(--d) ease-in-out infinite var(--delay);
+  }
+  @keyframes twinkle {
+    0%,100% { opacity: 0; transform: scale(0.6); }
+    50%      { opacity: 0.7; transform: scale(1.2); }
+  }
+
+  /* ── WRAPPER ── */
+  #app {
+    position: relative; z-index: 1;
+    width: min(700px, 96vw);
+    padding: 20px 0 40px;
+  }
+
+  /* ── BRAND HEADER ── */
+  .brand {
+    text-align: center;
+    margin-bottom: 8px;
+    font-size: 13px;
+    color: var(--muted);
+    letter-spacing: 2px;
+    font-weight: 500;
+  }
+
+  /* ── PROGRESS BAR ── */
+  #progress-wrap {
+    height: 6px;
+    background: rgba(124,92,191,0.15);
+    border-radius: 99px;
+    margin-bottom: 28px;
+    overflow: hidden;
+  }
+  #progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--violet), var(--rose));
+    border-radius: 99px;
+    transition: width 0.6s cubic-bezier(.4,0,.2,1);
+  }
+
+  /* ── SCENE CARD ── */
+  #scene-card {
+    background: var(--card-bg);
+    border-radius: 28px;
+    box-shadow: var(--shadow);
+    padding: 36px 36px 32px;
+    position: relative;
+    overflow: hidden;
+    animation: slide-in 0.5s cubic-bezier(.4,0,.2,1);
+  }
+  @keyframes slide-in {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* accent ribbon */
+  #scene-card::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 180px; height: 180px;
+    border-radius: 0 28px 0 180px;
+    background: linear-gradient(135deg, var(--scene-color, var(--violet)) 0%, transparent 70%);
+    opacity: 0.13;
+    transition: background 0.5s;
+  }
+
+  /* ── SCENE EMOJI ── */
+  .scene-emoji {
+    font-size: 72px;
+    text-align: center;
+    display: block;
+    margin-bottom: 20px;
+    animation: bounce-in 0.6s cubic-bezier(.4,0,.2,1);
+    filter: drop-shadow(0 4px 12px rgba(0,0,0,0.15));
+  }
+  @keyframes bounce-in {
+    0%   { transform: scale(0.3) rotate(-10deg); opacity: 0; }
+    60%  { transform: scale(1.15) rotate(4deg); opacity: 1; }
+    100% { transform: scale(1) rotate(0); }
+  }
+
+  /* ── CHAPTER LABEL ── */
+  .chapter-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--scene-color, var(--violet));
+    margin-bottom: 10px;
+    transition: color 0.5s;
+  }
+
+  /* ── TITLE ── */
+  .scene-title {
+    font-size: clamp(22px, 4vw, 30px);
+    font-weight: 900;
+    line-height: 1.3;
+    margin-bottom: 20px;
+    color: var(--ink);
+  }
+
+  /* ── STORY TEXT ── */
+  .scene-text {
+    font-size: clamp(15px, 2.5vw, 18px);
+    line-height: 2;
+    color: #3d3352;
+    margin-bottom: 28px;
+  }
+  .scene-text .highlight {
+    color: var(--scene-color, var(--violet));
+    font-weight: 700;
+  }
+
+  /* ── DIVIDER ── */
+  .divider {
+    border: none;
+    border-top: 2px dashed rgba(124,92,191,0.2);
+    margin: 0 0 24px;
+  }
+
+  /* ── CHOICES LABEL ── */
+  .choices-label {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--muted);
+    letter-spacing: 1px;
+    margin-bottom: 14px;
+  }
+
+  /* ── CHOICE BUTTONS ── */
+  .choices { display: flex; flex-direction: column; gap: 12px; }
+
+  .choice-btn {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: var(--paper);
+    border: 2px solid transparent;
+    border-radius: 16px;
+    padding: 16px 20px;
+    cursor: pointer;
+    font-family: 'Tajawal', sans-serif;
+    font-size: clamp(14px, 2.5vw, 17px);
+    font-weight: 600;
+    color: var(--ink);
+    text-align: right;
+    transition: all 0.25s cubic-bezier(.4,0,.2,1);
+    position: relative;
+    overflow: hidden;
+  }
+  .choice-btn::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--choice-color, var(--violet));
+    opacity: 0;
+    transition: opacity 0.25s;
+    border-radius: 14px;
+  }
+  .choice-btn:hover, .choice-btn:focus-visible {
+    border-color: var(--choice-color, var(--violet));
+    color: var(--choice-color, var(--violet));
+    transform: translateX(-4px);
+    box-shadow: 4px 4px 0 var(--choice-color, var(--violet));
+  }
+  .choice-btn:active { transform: translateX(-2px); }
+
+  .choice-icon {
+    font-size: 26px;
+    flex-shrink: 0;
+    z-index: 1;
+    position: relative;
+  }
+  .choice-text { z-index: 1; position: relative; }
+
+  /* ── ENDING CARD ── */
+  .ending-badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    padding: 4px 14px;
+    border-radius: 99px;
+    margin-bottom: 16px;
+  }
+  .ending-good  { background: #d4f7ec; color: var(--leaf); }
+  .ending-mixed { background: #fff3d4; color: var(--gold); }
+  .ending-bad   { background: #fde8ee; color: var(--rose); }
+
+  /* ── RESTART BUTTON ── */
+  #restart-btn {
+    display: block;
+    width: 100%;
+    margin-top: 28px;
+    padding: 18px;
+    background: linear-gradient(135deg, var(--violet), var(--rose));
+    color: #fff;
+    border: none;
+    border-radius: 16px;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 18px;
+    font-weight: 800;
+    cursor: pointer;
+    letter-spacing: 1px;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 6px 20px rgba(124,92,191,0.35);
+  }
+  #restart-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 28px rgba(124,92,191,0.4); }
+  #restart-btn:active { transform: translateY(-1px); }
+
+  /* ── PATH TRACKER ── */
+  #path-tracker {
+    margin-top: 22px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    justify-content: center;
+    min-height: 28px;
+  }
+  .path-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--dot-color, var(--violet));
+    opacity: 0.4;
+    transition: opacity 0.3s, transform 0.3s;
+  }
+  .path-dot.active { opacity: 1; transform: scale(1.4); }
+  .path-arrow {
+    font-size: 12px;
+    color: var(--muted);
+    opacity: 0.5;
+  }
+
+  @media (max-width: 500px) {
+    #scene-card { padding: 24px 20px 24px; }
+    .scene-emoji { font-size: 54px; }
+  }
+</style>
+</head>
+<body>
+
+<div id="stars"></div>
+
+<div id="app">
+  <p class="brand">رنيم فاي · التعلم الممتع</p>
+  <div id="progress-wrap"><div id="progress-bar" style="width:0%"></div></div>
+  <div id="scene-card"></div>
+  <div id="path-tracker"></div>
+</div>
+
+<script>
+/* ──────────────────────────────────────────
+   STORY DATA
+   type: "choice" | "ending"
+   ending types: "good" | "mixed" | "bad"
+────────────────────────────────────────── */
+const STORY = {
+
+  start: {
+    type: "choice",
+    color: "#7c5cbf",
+    emoji: "🌟",
+    chapter: "الفصل الأول",
+    title: "نجمة في الغابة السحرية",
+    text: `في يوم مشمس جميل، وجدت <span class="highlight">نجمة</span> بوابةً غريبةً في حديقة بيتها.
+فتحتها بخوف وفضول، فإذا بها تجد نفسها في غابةٍ سحريةٍ مليئة بالألوان والأضواء!
+سمعت صوتاً يُنادي: <em>"من يدخل الغابة يختار طريقه بنفسه!"</em>`,
+    choices: [
+      { icon: "🦋", text: "اتبعي الفراشة الذهبية الطائرة أمامك", next: "butterfly" },
+      { icon: "🏡", text: "اتجهي نحو البيت الصغير بين الأشجار", next: "house" },
+      { icon: "💧", text: "اسيري نحو صوت النهر الجميل", next: "river" }
+    ]
+  },
+
+  butterfly: {
+    type: "choice",
+    color: "#f5a623",
+    emoji: "🦋",
+    chapter: "الفصل الثاني",
+    title: "الفراشة الذهبية",
+    text: `طارت الفراشة الذهبية ببطء وكأنها تنتظر <span class="highlight">نجمة</span>.
+قادتها إلى حقلٍ من الورود الملوّنة، وفي وسطه شجرةٌ عملاقةٌ بأوراقٍ فضيّة.
+قالت الفراشة بصوتٍ رقيق: <em>"في الشجرة مفتاحٌ واحد... لكن الطريق إليه صعب!"</em>`,
+    choices: [
+      { icon: "🧗", text: "تسلّقي الشجرة للوصول إلى المفتاح", next: "climb_tree" },
+      { icon: "🌸", text: "اطلبي مساعدة زهرة الحديقة السحرية", next: "flower_help" }
+    ]
+  },
+
+  house: {
+    type: "choice",
+    color: "#4caf82",
+    emoji: "🏡",
+    chapter: "الفصل الثاني",
+    title: "البيت الغريب الصغير",
+    text: `اقتربت <span class="highlight">نجمة</span> من الباب الخشبي القديم ودقّت عليه.
+فُتح الباب ببطء وظهر <em>أرنبٌ بنظارةٍ كبيرة</em> يحمل كتاباً ضخماً!
+قال الأرنب: <em>"مرحباً يا ضيفتي الصغيرة! هل تريدين الإجابة عن سؤالي؟"</em>`,
+    choices: [
+      { icon: "📚", text: "قبول التحدي والإجابة عن السؤال", next: "riddle" },
+      { icon: "🎁", text: "اطلبي من الأرنب هديةً بدلاً من السؤال", next: "gift_request" }
+    ]
+  },
+
+  river: {
+    type: "choice",
+    color: "#4db8e8",
+    emoji: "🌊",
+    chapter: "الفصل الثاني",
+    title: "النهر الغنّاء",
+    text: `وصلت <span class="highlight">نجمة</span> إلى نهرٍ يغنّي بصوتٍ موسيقيّ رائع!
+على ضفّته جلست <em>سلحفاةٌ حكيمةٌ قديمة</em> تنظر إليها بابتسامة.
+قالت السلحفاة: <em>"لعبور النهر طريقان، كلٌّ منهما يعلّمكِ شيئاً!"</em>`,
+    choices: [
+      { icon: "🪵", text: "اعبري النهر على الجسر الخشبي القديم", next: "bridge" },
+      { icon: "🤝", text: "اطلبي من السلحفاة أن تحملكِ عبر الماء", next: "turtle_ride" }
+    ]
+  },
+
+  climb_tree: {
+    type: "choice",
+    color: "#e8517a",
+    emoji: "🌳",
+    chapter: "الفصل الثالث",
+    title: "التسلق الشجاع",
+    text: `تسلّقت <span class="highlight">نجمة</span> الشجرة الفضية بشجاعة.
+لكن في منتصف الطريق، وجدت عشَّ طائرٍ صغيرٍ ساقطاً من غصنٍ أعلى.
+فيه <em>بيضتان صغيرتان تحتاجان إلى الدفء</em>...`,
+    choices: [
+      { icon: "💛", text: "أنقذي البيضتين وعودي للأسفل", next: "end_hero" },
+      { icon: "⬆️", text: "واصلي الصعود للوصول إلى المفتاح أولاً", next: "end_lonely_key" }
+    ]
+  },
+
+  flower_help: {
+    type: "ending",
+    endingType: "good",
+    color: "#4caf82",
+    emoji: "🌺",
+    chapter: "النهاية",
+    title: "قوة الصداقة",
+    text: `طلبت <span class="highlight">نجمة</span> مساعدة زهرة الحديقة، فأيقظت كل أصدقائها.
+جاء الفراش والعصافير والأرانيب معاً، ومدّوا أغصاناً وسلاسل من الورود حتى وصلوا للمفتاح.
+فتحت نجمة بوابةً سرية وجدت خلفها <em>مكتبةً سحريةً كاملةً مليئة بالقصص</em>!
+عادت نجمة إلى بيتها بقلبٍ مليء بالفرح... وبحكمةٍ جديدة:`,
+    moral: "طلب المساعدة ليس ضعفاً، بل هو قوةٌ وذكاء! 💛"
+  },
+
+  riddle: {
+    type: "choice",
+    color: "#7c5cbf",
+    emoji: "🤔",
+    chapter: "الفصل الثالث",
+    title: "لغز الأرنب الحكيم",
+    text: `قال الأرنب: <em>"ما الشيء الذي تستطيعين إعطاءه للآخرين دون أن تفقديه؟"</em>
+فكّرت <span class="highlight">نجمة</span> طويلاً...`,
+    choices: [
+      { icon: "😊", text: '"الابتسامة والمحبة!" قالت نجمة بثقة', next: "end_wise" },
+      { icon: "🪙", text: '"المال والهدايا!" قالت نجمة بتسرّع', next: "end_wrong_riddle" }
+    ]
+  },
+
+  gift_request: {
+    type: "ending",
+    endingType: "mixed",
+    color: "#f5a623",
+    emoji: "🎁",
+    chapter: "النهاية",
+    title: "الهدية المفاجئة",
+    text: `ابتسم الأرنب وأخرج صندوقاً ذهبياً لامعاً.
+فتحته <span class="highlight">نجمة</span> فوجدت فيه... <em>مرآةً صغيرةً جميلة</em>.
+نظرت فيها فرأت نفسها وهي تتعلّم وتكبر وتصبح شخصاً رائعاً.
+قال الأرنب: <em>"أجمل هديةٍ تملكينها هي نفسكِ!"</em>
+عادت نجمة سعيدةً بعض الشيء، لكنها تساءلت: هل كان التحدي سيعطيها شيئاً أجمل؟`,
+    moral: "التحديات صعبة، لكنها تمنحنا أكثر مما نتخيّل! 🌟"
+  },
+
+  bridge: {
+    type: "ending",
+    endingType: "good",
+    color: "#4db8e8",
+    emoji: "🌈",
+    chapter: "النهاية",
+    title: "الجسر إلى المعرفة",
+    text: `ساعدت <span class="highlight">نجمة</span> السلحفاة أولاً في حمل أشياءٍ ثقيلة على ظهرها.
+ثم عبرت الجسر الخشبي بهدوءٍ وحكمة، دون عجلة.
+في الضفة الأخرى، وجدت <em>حديقةً سرية مليئة بالمعرفة والأسرار الجميلة</em>.
+قالت السلحفاة: <em>"من يساعد الآخرين، يجد طريقه مضاءً دائماً!"</em>`,
+    moral: "الصبر ومساعدة الآخرين يفتحان أبواباً عجيبة! 🐢"
+  },
+
+  turtle_ride: {
+    type: "ending",
+    endingType: "mixed",
+    color: "#00b89f",
+    emoji: "🐢",
+    chapter: "النهاية",
+    title: "المغامرة على ظهر السلحفاة",
+    text: `حملت السلحفاة <span class="highlight">نجمة</span> بلطفٍ عبر النهر الغنّاء.
+كانت رحلةً ممتعةً وجميلة، لكن السلحفاة توقّفت فجأة وقالت:
+<em>"حين تحملين نفسكِ بنفسكِ، ترين أكثر وتتعلّمين أكثر!"</em>
+وصلت نجمة إلى الضفة الأخرى مبتسمةً، وقرّرت في المرة القادمة أن تحاول بمفردها أولاً.`,
+    moral: "التجربة بنفسك تعطيكِ ما لا يمكن لأحدٍ آخر إعطاءه! 💪"
+  },
+
+  end_hero: {
+    type: "ending",
+    endingType: "good",
+    color: "#4caf82",
+    emoji: "🐣",
+    chapter: "النهاية",
+    title: "قلبٌ كبير من ذهب",
+    text: `أنقذت <span class="highlight">نجمة</span> البيضتين الصغيرتين ووضعتهما في مكانٍ دافئ وآمن.
+نزلت من الشجرة بدون المفتاح، لكن شيئاً مدهشاً حدث!
+ظهرت الفراشة الذهبية مرةً أخرى وأعطتها مفتاحاً أكبر وأجمل، وقالت:
+<em>"من يختار الرحمة، تُفتح له أبوابٌ لم يرها أحدٌ من قبل!"</em>`,
+    moral: "الرحمة والطيبة هما أعظم قوةٍ في العالم! 💛🐣"
+  },
+
+  end_lonely_key: {
+    type: "ending",
+    endingType: "bad",
+    color: "#e8517a",
+    emoji: "🗝️",
+    chapter: "النهاية",
+    title: "المفتاح الوحيد",
+    text: `وصلت <span class="highlight">نجمة</span> إلى المفتاح لكنها وجدته بارداً وثقيلاً.
+حين عادت إلى الأسفل، سمعت صوت صياحٍ حزيناً للطائر الصغير الذي فقد بيضتيه.
+فتحت الباب بالمفتاح لكنه أوصلها إلى غرفةٍ فارغة ومظلمة.
+كتب على الجدار: <em>"الكنوز الحقيقية لا تُوجد وراء الأبواب، بل في قلوبنا حين نهتم بالآخرين!"</em>`,
+    moral: "أحياناً أجمل شيءٍ هو التوقف ومساعدة من يحتاج! 🌱"
+  },
+
+  end_wise: {
+    type: "ending",
+    endingType: "good",
+    color: "#7c5cbf",
+    emoji: "✨",
+    chapter: "النهاية",
+    title: "الإجابة الحكيمة",
+    text: `صفّق الأرنب بسعادة: <em>"صحيح تماماً يا نجمة الذكية!"</em>
+فتح الكتاب الضخم وأعطاها صفحةً سحريةً تضيء بنفسها.
+فيها كُتب: <em>"الابتسامة تضيء الدنيا، والمحبة تجعل المستحيل ممكناً!"</em>
+حملت <span class="highlight">نجمة</span> الصفحة وعادت إلى بيتها وهي تشعر بأنها تعرف سرّ السعادة الحقيقية.`,
+    moral: "الحب والابتسامة هما أقوى ما في الكون! 💜✨"
+  },
+
+  end_wrong_riddle: {
+    type: "ending",
+    endingType: "mixed",
+    color: "#f5a623",
+    emoji: "😅",
+    chapter: "النهاية",
+    title: "تعلّمٌ جديد",
+    text: `هزّ الأرنب رأسه بلطف: <em>"ليس تماماً يا صديقتي الصغيرة!"</em>
+وشرح لها: <em>"المال يُعطى فيَنقص، لكن المحبة والابتسامة تُعطى فتزيد!"</em>
+شعرت <span class="highlight">نجمة</span> بالخجل قليلاً ثم ابتسمت وقالت: <em>"أفهم الآن!"</em>
+أعطاها الأرنب وسامَ التعلّم الذهبي وقال: <em>"الخطأ أوّل خطواتِ النجاح!"</em>`,
+    moral: "لا بأس بالخطأ، المهم أن نتعلّم ونستمر! 🐰"
+  }
+};
+
+/* ──────────────────────────────────────────
+   STATE
+────────────────────────────────────────── */
+let current = "start";
+let history  = [];
+const TOTAL_DEPTH = 4; // typical max depth
+
+/* ──────────────────────────────────────────
+   STARS
+────────────────────────────────────────── */
+function buildStars() {
+  const wrap = document.getElementById("stars");
+  for (let i = 0; i < 60; i++) {
+    const s = document.createElement("div");
+    s.className = "star";
+    const size = 2 + Math.random() * 4;
+    s.style.cssText = `
+      width:${size}px; height:${size}px;
+      top:${Math.random()*100}%;
+      left:${Math.random()*100}%;
+      --d:${2+Math.random()*4}s;
+      --delay:${-Math.random()*6}s;
+    `;
+    wrap.appendChild(s);
+  }
+}
+
+/* ──────────────────────────────────────────
+   RENDER
+────────────────────────────────────────── */
+function render() {
+  const scene = STORY[current];
+  const card  = document.getElementById("scene-card");
+  const bar   = document.getElementById("progress-bar");
+  const tracker = document.getElementById("path-tracker");
+
+  // progress
+  const pct = Math.min(100, Math.round((history.length / TOTAL_DEPTH) * 100));
+  bar.style.width = pct + "%";
+
+  // scene color on card
+  card.style.setProperty("--scene-color", scene.color);
+
+  // path tracker
+  tracker.innerHTML = history.map((id,i) => {
+    const sc = STORY[id];
+    return `
+      ${i>0?'<span class="path-arrow">◂</span>':''}
+      <div class="path-dot active" style="--dot-color:${sc.color}" title="${sc.title}"></div>
+    `;
+  }).join("") + (history.length > 0 ? '<span class="path-arrow">◂</span>' : '') +
+  `<div class="path-dot active" style="--dot-color:${scene.color}"></div>`;
+
+  /* ── CHOICE SCENE ── */
+  if (scene.type === "choice") {
+    card.innerHTML = `
+      <span class="scene-emoji">${scene.emoji}</span>
+      <div class="chapter-label">${scene.chapter}</div>
+      <h1 class="scene-title">${scene.title}</h1>
+      <p class="scene-text">${scene.text}</p>
+      <hr class="divider">
+      <p class="choices-label">✦ ماذا تفعلين؟</p>
+      <div class="choices">
+        ${scene.choices.map((c,i) => `
+          <button class="choice-btn" data-next="${c.next}"
+            style="--choice-color:${CHOICE_COLORS[i % CHOICE_COLORS.length]}">
+            <span class="choice-icon">${c.icon}</span>
+            <span class="choice-text">${c.text}</span>
+          </button>
+        `).join("")}
+      </div>
+    `;
+    card.querySelectorAll(".choice-btn").forEach(btn => {
+      btn.addEventListener("click", () => navigate(btn.dataset.next));
+    });
+  }
+
+  /* ── ENDING SCENE ── */
+  else {
+    const badgeClass = {
+      good: "ending-good", mixed: "ending-mixed", bad: "ending-bad"
+    }[scene.endingType] || "ending-mixed";
+    const badgeLabel = {
+      good: "🌟 نهاية رائعة", mixed: "✨ نهاية جيدة", bad: "💭 درسٌ مهم"
+    }[scene.endingType] || "✨ النهاية";
+
+    card.innerHTML = `
+      <span class="scene-emoji">${scene.emoji}</span>
+      <span class="ending-badge ${badgeClass}">${badgeLabel}</span>
+      <div class="chapter-label" style="color:${scene.color}">${scene.chapter}</div>
+      <h1 class="scene-title">${scene.title}</h1>
+      <p class="scene-text">${scene.text}</p>
+      <hr class="divider">
+      <p class="scene-text" style="font-size:18px;font-weight:700;color:${scene.color}">
+        📖 الحكمة: ${scene.moral}
+      </p>
+      <button id="restart-btn">🔄 ابدئي مغامرةً جديدة!</button>
+    `;
+    document.getElementById("restart-btn").addEventListener("click", restart);
+  }
+}
+
+const CHOICE_COLORS = ["#7c5cbf", "#e8517a", "#4db8e8", "#4caf82", "#f5a623"];
+
+function navigate(next) {
+  history.push(current);
+  current = next;
+  // re-trigger animation
+  const card = document.getElementById("scene-card");
+  card.style.animation = "none";
+  requestAnimationFrame(() => { card.style.animation = ""; render(); });
+}
+
+function restart() {
+  history  = [];
+  current  = "start";
+  const card = document.getElementById("scene-card");
+  card.style.animation = "none";
+  requestAnimationFrame(() => { card.style.animation = ""; render(); });
+}
+
+/* ──────────────────────────────────────────
+   BOOT
+────────────────────────────────────────── */
+buildStars();
+render();
+</script>
+</body>
+</html>
